@@ -1,0 +1,74 @@
+Black Lotus (2) [Ramp]
+Dark Ritual (Unpaired) [Unassigned]
+Mountain (2) [Land, Ramp]
+Plains (Unpaired) [Land]
+Shock (1) [Removal]
+Thrill of Possibility (1) [Card Draw]
+Island (4) [Land]
+Swamp (4) [Land]
+Opt (5) [Card Draw]
+Counterspell (5) [Removal]
+Demonic Tutor (5) [Card Draws]
+Mana Drain (6)
+Force of Will (7)
+Force of Negation (7)
+Whir of Invention	
+Dance of the Manse	
+Reckless Handling	
+Elspeth Conquers Death	
+Ghirapur Aether Grid	
+Heiko Yamazaki, the General	
+Reckless Fireweaver	
+Emry, Lurker of the Loch	
+Sai, Master Thopterist	
+Third Path Iconoclast	
+Padeem, Consul of Innovation	
+Oswald Fiddlebender	
+Jhoira, Weatherlight Captain	
+Tezzeret, Artifice Master	
+Tezzeret, Master of the Bridge	
+Bident of Thassa	
+Weatherlight	
+Birgi, God of Storytelling	
+Cataclysmic Gearhulk	
+Chief of the Foundry	
+Haywire Mite	
+Cloudsteel Kirin	
+Crashing Drawbridge	
+Karn, Legacy Reforged	
+Hangarback Walker	
+Gingerbrute	
+Cityscape Leveler	
+Metalwork Colossus	
+The Celestus	
+Soul-Guide Lantern	
+Skyclave Relic	
+Eye of Vecna	
+Prophetic Prism	
+Oni-Cult Anvil	
+Manifold Key	
+Hedron Archive	
+Traveler's Amulet	
+The Mightstone and Weakstone	
+Mystic Forge	
+Lithoform Engine	
+Moonsilver Key	
+Foundry Inspector	
+Jhoira's Familiar	
+Enthusiastic Mechanaut	
+Liberator, Urza's Battlethopter	
+Lion Sash	
+Lizard Blades	
+Hope of Ghirapur	
+Meteor Golem	
+Myr Convert	
+Palladium Myr	
+Phyrexian Revoker	
+Scrap Trawler	
+Skrelv, Defector Mite	
+Smuggler's Copter	
+Soulless Jailer	
+Steel Overseer	
+The Reality Chip	
+Workshop Assistant	
+Zenith Chronicler	
