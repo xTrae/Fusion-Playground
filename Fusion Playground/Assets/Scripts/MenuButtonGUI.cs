@@ -34,7 +34,6 @@ public class MenuButtonGUI : MonoBehaviour
     {
         Debug.Log("You pressed Deck Building!");
         SceneManager.LoadScene("DeckBuilderScene");
-        Debug.Log("dick fingers");
     }
 
     private void GameButtonPress()

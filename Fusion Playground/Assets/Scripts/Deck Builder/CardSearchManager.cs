@@ -88,10 +88,8 @@ public class CardSearchManager : MonoBehaviour
 
     public void TogglePopup()
     {
-        if (isPopupOpen)
-            ClosePopup();
-        else
-            OpenPopup();
+        if (isPopupOpen) ClosePopup();
+        else OpenPopup();
     }
 
     private void OpenPopup()

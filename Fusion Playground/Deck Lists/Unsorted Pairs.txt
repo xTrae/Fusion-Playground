@@ -1,74 +1,74 @@
-Black Lotus (2) [Ramp]
-Dark Ritual (Unpaired) [Unassigned]
-Mountain (2) [Land, Ramp]
-Plains (Unpaired) [Land]
 Shock (1) [Removal]
 Thrill of Possibility (1) [Card Draw]
+Black Lotus (2) [Ramp]
+Mountain (2) [Land, Ramp]
 Island (4) [Land]
 Swamp (4) [Land]
-Opt (5) [Card Draw]
 Counterspell (5) [Removal]
-Demonic Tutor (5) [Card Draws]
-Mana Drain (6)
-Force of Will (7)
-Force of Negation (7)
-Whir of Invention	
-Dance of the Manse	
-Reckless Handling	
-Elspeth Conquers Death	
-Ghirapur Aether Grid	
-Heiko Yamazaki, the General	
-Reckless Fireweaver	
-Emry, Lurker of the Loch	
-Sai, Master Thopterist	
-Third Path Iconoclast	
-Padeem, Consul of Innovation	
-Oswald Fiddlebender	
-Jhoira, Weatherlight Captain	
-Tezzeret, Artifice Master	
-Tezzeret, Master of the Bridge	
-Bident of Thassa	
-Weatherlight	
-Birgi, God of Storytelling	
-Cataclysmic Gearhulk	
-Chief of the Foundry	
-Haywire Mite	
-Cloudsteel Kirin	
-Crashing Drawbridge	
-Karn, Legacy Reforged	
-Hangarback Walker	
-Gingerbrute	
-Cityscape Leveler	
-Metalwork Colossus	
-The Celestus	
-Soul-Guide Lantern	
-Skyclave Relic	
-Eye of Vecna	
-Prophetic Prism	
-Oni-Cult Anvil	
-Manifold Key	
-Hedron Archive	
-Traveler's Amulet	
-The Mightstone and Weakstone	
-Mystic Forge	
-Lithoform Engine	
-Moonsilver Key	
-Foundry Inspector	
-Jhoira's Familiar	
-Enthusiastic Mechanaut	
-Liberator, Urza's Battlethopter	
-Lion Sash	
-Lizard Blades	
-Hope of Ghirapur	
-Meteor Golem	
-Myr Convert	
-Palladium Myr	
-Phyrexian Revoker	
-Scrap Trawler	
-Skrelv, Defector Mite	
-Smuggler's Copter	
-Soulless Jailer	
-Steel Overseer	
-The Reality Chip	
-Workshop Assistant	
-Zenith Chronicler	
+Force of Negation (5) [Unassigned]
+Reckless Fireweaver (6) [Unassigned]
+Ghirapur Aether Grid (6) [Unassigned]
+Emry, Lurker of the Loch (7) [Unassigned]
+Sai, Master Thopterist (7) [Unassigned]
+Reckless Handling (8) [Unassigned]
+Third Path Iconoclast (8) [Unassigned]
+Heiko Yamazaki, the General (Unpaired) [Unassigned]
+Elspeth Conquers Death (Unpaired) [Unassigned]
+Opt (Unpaired) [Card Draw]
+Force of Will (Unpaired) [Unassigned]
+Demonic Tutor (Unpaired) [Card Draws]
+Mana Drain (Unpaired) [Unassigned]
+Dark Ritual (Unpaired) [Unassigned]
+Plains (Unpaired) [Land]
+Whir of Invention (Unpaired) [Unassigned]
+Dance of the Manse (Unpaired) [Unassigned]
+Padeem, Consul of Innovation (Unpaired) [Unassigned]
+Oswald Fiddlebender (Unpaired) [Unassigned]
+Jhoira, Weatherlight Captain (Unpaired) [Unassigned]
+Tezzeret, Artifice Master (Unpaired) [Unassigned]
+Tezzeret, Master of the Bridge (Unpaired) [Unassigned]
+Bident of Thassa (Unpaired) [Unassigned]
+Weatherlight (Unpaired) [Unassigned]
+Birgi, God of Storytelling (Unpaired) [Unassigned]
+Cataclysmic Gearhulk (Unpaired) [Unassigned]
+Chief of the Foundry (Unpaired) [Unassigned]
+Haywire Mite (Unpaired) [Unassigned]
+Cloudsteel Kirin (Unpaired) [Unassigned]
+Crashing Drawbridge (Unpaired) [Unassigned]
+Karn, Legacy Reforged (Unpaired) [Unassigned]
+Hangarback Walker (Unpaired) [Unassigned]
+Gingerbrute (Unpaired) [Unassigned]
+Cityscape Leveler (Unpaired) [Unassigned]
+Metalwork Colossus (Unpaired) [Unassigned]
+The Celestus (Unpaired) [Unassigned]
+Soul-Guide Lantern (Unpaired) [Unassigned]
+Skyclave Relic (Unpaired) [Unassigned]
+Eye of Vecna (Unpaired) [Unassigned]
+Prophetic Prism (Unpaired) [Unassigned]
+Oni-Cult Anvil (Unpaired) [Unassigned]
+Manifold Key (Unpaired) [Unassigned]
+Hedron Archive (Unpaired) [Unassigned]
+Traveler's Amulet (Unpaired) [Unassigned]
+The Mightstone and Weakstone (Unpaired) [Unassigned]
+Mystic Forge (Unpaired) [Unassigned]
+Lithoform Engine (Unpaired) [Unassigned]
+Moonsilver Key (Unpaired) [Unassigned]
+Foundry Inspector (Unpaired) [Unassigned]
+Jhoira's Familiar (Unpaired) [Unassigned]
+Enthusiastic Mechanaut (Unpaired) [Unassigned]
+Liberator, Urza's Battlethopter (Unpaired) [Unassigned]
+Lion Sash (Unpaired) [Unassigned]
+Lizard Blades (Unpaired) [Unassigned]
+Hope of Ghirapur (Unpaired) [Unassigned]
+Meteor Golem (Unpaired) [Unassigned]
+Myr Convert (Unpaired) [Unassigned]
+Palladium Myr (Unpaired) [Unassigned]
+Phyrexian Revoker (Unpaired) [Unassigned]
+Scrap Trawler (Unpaired) [Unassigned]
+Skrelv, Defector Mite (Unpaired) [Unassigned]
+Smuggler's Copter (Unpaired) [Unassigned]
+Soulless Jailer (Unpaired) [Unassigned]
+Steel Overseer (Unpaired) [Unassigned]
+The Reality Chip (Unpaired) [Unassigned]
+Workshop Assistant (Unpaired) [Unassigned]
+Zenith Chronicler (Unpaired) [Unassigned]

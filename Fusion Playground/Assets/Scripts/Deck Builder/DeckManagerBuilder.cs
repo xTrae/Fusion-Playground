@@ -12,11 +12,14 @@ using UnityEngine.SceneManagement;
 // The save button and other things need to have a visiual indicator. An in-game debug log.
 // There needs to be a "new deck" button. Clears everything, removes the current deck name.
 // The save button needs to be smarter about the deck name, not accepting blank names or things with unusual characters
-// A way to delete files from within the game if the file browser doesn't.
+//   I created a simple fix, only letting the deck name box accept numbers and letters, but it doesnt allow spaces... weird.
+//   In a similar fashion, I should limit what it can parse for the deck name when uploading a text file. I don't want that to also be able
+//   to break things. It should convert a messy file time into a safe one, and change the orignal file name.
+// Need a way to delete deck files from within the game, since the file browser doesn't I believe.
 // When you pair an unpaired card with an already paired card, there's a third card that could be auto-paired with an unpaired card, 
 //   just like adding cards from a search does. That could be a setting.
 // There is currently a bug where cards being added without a deck being loaded before hand breaks a few things.
-//   the first two cards added by search stack on top of each other. And pairing cards break because it's trying to place things in an empty list.
+//   the first two cards added by search stack on top of each other. And pairing any cards break because it's trying to place things in an empty list.
 //   the latter probably just needs a check for list length zero and adding a card instead of placing it at a certain position in the list.
 
 [System.Serializable]
@@ -57,6 +60,7 @@ public class DeckManagerBuilder : MonoBehaviour
     public GameObject cardPrefab; 
     public Canvas canvas;
     public GameObject scrollScreen;
+    public GameObject trashCan;
     public LayerMask cardLayer;
     // Varibles used
     private List<ScryfallCard> deckList = new List<ScryfallCard>();
@@ -76,6 +80,8 @@ public class DeckManagerBuilder : MonoBehaviour
     public bool isDraggingCard = false;
     public float shiftingCooldown = 0.0f;
     private float shiftingCooldownNew = 0.3f;
+    private float trashCanTimeThreshold = 0.3f;
+    private float trashCanLastCheck = 0f;
     private int firstUnpairedIndex = 0;
 
     private bool UnlikelySwapSetting = false; // This may be turned into a dictionary of setting variables in the future
@@ -84,6 +90,8 @@ public class DeckManagerBuilder : MonoBehaviour
     private bool InstantPairingSetting = false; 
     public Sprite InstantPairingImageOn;
     public Sprite InstantPairingImageOff;
+    public Sprite TrashCanImageOn;
+    public Sprite TrashCanImageOff;
     public TMP_InputField inputText;
 
     void Start()
@@ -105,7 +113,49 @@ public class DeckManagerBuilder : MonoBehaviour
 
     void Update()
     {
+        // A timer that constantly ticks down to hopefully not shift cards around too often.
         if (shiftingCooldown > 0) shiftingCooldown -= Time.deltaTime;
+
+        // A trash can to delete cards with. Testing if you're dragging a card on top.
+        TrashCanCheck();
+    }
+
+    private void TrashCanCheck()
+    {
+        // A trash can to delete cards with. Testing if you're dragging a card on top.
+
+        if (isDraggingCard || trashCanLastCheck - Time.time > trashCanTimeThreshold)
+        {
+            // Only check every fraction of a second instead of every frame.
+            trashCanLastCheck = Time.time;
+            // If the Magnitude is less than two hundred thousand (about a quarter of the screen)
+            if ((Input.mousePosition - trashCan.transform.position).sqrMagnitude < 200000)
+            {
+                // Make the trash can visable.
+                trashCan.SetActive(true);
+                // If the Magnitude is less than ten thousand (the card should be touching the trash can)
+                if ((Input.mousePosition - trashCan.transform.position).sqrMagnitude < 10000)
+                {
+                    // Set the Image to the red trash can
+                    trashCan.GetComponent<Image>().sprite = TrashCanImageOn;
+                }
+                else
+                {
+                    // Set the image to the regular trash can image
+                    trashCan.GetComponent<Image>().sprite = TrashCanImageOff;
+                }
+            }
+            else
+            {
+                // Make the trash can invisible
+                trashCan.SetActive(false);
+            }
+        }
+        else
+        {
+            // Make the trash can invisible
+            trashCan.SetActive(false);
+        }
     }
 
     public void GoBack()
