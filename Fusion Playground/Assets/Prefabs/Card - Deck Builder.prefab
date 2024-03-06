@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -3200015560860849155}
   - component: {fileID: -7485651170844663744}
   m_Layer: 6
-  m_Name: Card Builder
+  m_Name: Card - Deck Builder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
