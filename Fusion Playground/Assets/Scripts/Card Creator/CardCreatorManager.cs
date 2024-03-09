@@ -15,10 +15,15 @@ public class CardCreatorManager : MonoBehaviour
     private float targetScreenShotWidth = 500f;
     private float cardAspectRatio = 1.4f;
 
-    void Awake()
+    private void Awake()
     {
         backButton.onClick.AddListener(PlayButtonPress);
         saveButton.onClick.AddListener(SaveButtonPress);
+    }
+
+    private void Update()
+    {
+        //Debug.Log(Input.mousePosition.x + " : " + Input.mousePosition.y);
     }
 
     private void PlayButtonPress()
@@ -31,8 +36,13 @@ public class CardCreatorManager : MonoBehaviour
     {
         Debug.Log("You pressed the Save Button");
 
+        TakeScreenShot();
+    }
+
+    private void TakeScreenShot()
+    {
         // Define the folder path where screenshots will be saved
-        string saveFolder = Path.Combine(Application.persistentDataPath, "SavedScreenshots");
+        string saveFolder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Saved Screenshots");
 
         // Create the folder if it doesn't exist
         if (!Directory.Exists(saveFolder))
@@ -46,10 +56,16 @@ public class CardCreatorManager : MonoBehaviour
         // Get the RectTransform component of the emptyCard
         RectTransform rectTransform = emptyCard.GetComponent<RectTransform>();
 
-        // Calculate the size of the object in screen space, taking into account scaling
+        // Calculate the size and position of the object in screen space
         Vector3[] corners = new Vector3[4];
         rectTransform.GetWorldCorners(corners);
-        float width = corners[2].x - corners[0].x;
+        Debug.Log(corners[0] + " : " + corners[1] + " : " + corners[2] + " : " + corners[3]);
+
+        float originX = corners[0][0];
+        float originY = corners[0][1];
+        float width = corners[2][0] - corners[0][0];
+        float height = corners[2][1] - corners[0][1];
+        //Debug.Log(originX + " : " + originY + " : " + width + " : " + height);
 
         // Skip taking screenshot if width is less than 100 pixels
         if (width < 100f)
@@ -58,20 +74,13 @@ public class CardCreatorManager : MonoBehaviour
             return;
         }
 
-        // Calculate the center position of the object in screen space
-        Vector3 center = (corners[0] + corners[2]) / 2f;
-
-        // Calculate the position of the top-left corner of the capture area
-        float x = center.x - (width / 2);
-        float y = center.y - (width / 2); // Using width to maintain aspect ratio
-
         // Create a Texture2D with the specified dimensions and read pixels from the screen
-        Texture2D screenshotTexture = new Texture2D((int)width, (int)width, TextureFormat.RGB24, false);
-        screenshotTexture.ReadPixels(new Rect(x, y, width, width), 0, 0);
+        Texture2D screenshotTexture = new Texture2D((int)width, (int)height, TextureFormat.RGB24, false);
+        screenshotTexture.ReadPixels(new Rect(originX, originY, width, height), 0, 0);
         screenshotTexture.Apply();
 
         // Scale the screenshot to a uniform size of 500 pixels width
-        Texture2D scaledTexture = ScaleTexture(screenshotTexture, targetScreenShotWidth);
+        Texture2D scaledTexture = ScaleTexture(screenshotTexture);
 
         // Define the file path for the screenshot
         string screenshotPath = Path.Combine(saveFolder, screenshotName);
@@ -86,40 +95,32 @@ public class CardCreatorManager : MonoBehaviour
         Debug.Log("Screenshot saved to: " + screenshotPath);
     }
 
-    private Texture2D ScaleTexture(Texture2D source, float targetWidth)
+    private Texture2D ScaleTexture(Texture2D source)
     {
-        //THIS IS NOT WORKING
-        // This is very close, but I'm tried and can not look at this right now. I was copied from ChatGPT
+        int targetWidth = 500;
+        int targetHeight = 700;
 
-        float targetHeight = targetWidth * cardAspectRatio;
+        // Create a new texture with the specified dimensions
+        Texture2D reversedTexture = new Texture2D(targetWidth, targetHeight, TextureFormat.RGBA32, false);
 
-        // Create a new texture with the target dimensions
-        Texture2D scaledTexture = new Texture2D((int)targetWidth, (int)targetHeight, TextureFormat.RGB24, false);
+        // Calculate scaling factors
+        float scaleX = (float)source.width / targetWidth;
+        float scaleY = (float)source.height / targetHeight;
 
-        // Set the filter mode to Bilinear for better quality
-        scaledTexture.filterMode = FilterMode.Bilinear;
-
-        // Get the ratio of source to target dimensions
-        float widthRatio = (float)source.width / targetWidth;
-        float heightRatio = (float)source.height / targetHeight;
-
-        // Iterate through each pixel of the target texture
+        // Copy pixels from the source texture to the reversed texture
         for (int y = 0; y < targetHeight; y++)
         {
             for (int x = 0; x < targetWidth; x++)
             {
-                // Calculate the corresponding pixel position in the source texture
-                int sourceX = Mathf.RoundToInt(x * widthRatio);
-                int sourceY = Mathf.RoundToInt(y * heightRatio);
-
-                // Get the pixel color from the source texture and set it in the scaled texture
-                Color color = source.GetPixel(sourceX, sourceY);
-                scaledTexture.SetPixel(x, y, color);
+                int newX = Mathf.RoundToInt(x * scaleX);
+                int newY = Mathf.RoundToInt(y * scaleY);
+                Color32 pixel = source.GetPixel(newX, newY);
+                reversedTexture.SetPixel(x, y, pixel);
             }
         }
 
-        // Apply changes and return the scaled texture
-        scaledTexture.Apply();
-        return scaledTexture;
+        // Apply changes and return the reversed texture
+        reversedTexture.Apply();
+        return reversedTexture;
     }
 }
