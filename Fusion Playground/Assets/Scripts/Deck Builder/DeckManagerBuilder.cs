@@ -28,9 +28,11 @@ public class ScryfallCard
     public string name;
     public string mana_cost;
     public List<string> colors;
+    public List<string> color_identity;
+    public double color_sorting;
     public string type_line;
-    public ImageUris image_uris;
     public int mana_value;
+    public ImageUris image_uris;
     public List<int> multiverse_ids;
     public string pairing;
     public List<string> category;
@@ -230,9 +232,15 @@ public class DeckManagerBuilder : MonoBehaviour
 
     private IEnumerator ShowLoadDialogCoroutine()
     {
-        // Later I need to test if this folder exists, and create it if not.
-        string savePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Deck Lists");
-        
+        // Define the folder path where deck lists should be saved
+        string savePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Saved Screenshots");
+
+        // Create the folder if it doesn't exist
+        if (!Directory.Exists(savePath))
+        {
+            Directory.CreateDirectory(savePath);
+        }
+
         // Show a load file dialog and wait for a response from the user
         // FileBrowser.WaitForLoadDialog( File or Folder: both, Allow multiple selection: true, Location to start from: savePath,
         // Initial filename: null, Title: "Load File", Submit button text: "Load" );
@@ -981,16 +989,5 @@ public class DeckManagerBuilder : MonoBehaviour
         }
 
         return bestCard;
-    }
-
-    string ExtractManaValue(string manaCost)
-    {
-        // Implement logic to extract mana value from the mana cost string
-        return "Unassigned";
-    }
-
-    string ExtractColors(List<string> colors)
-    {
-        return colors != null ? string.Join(", ", colors.ToArray()) : "Unassigned";
     }
 }

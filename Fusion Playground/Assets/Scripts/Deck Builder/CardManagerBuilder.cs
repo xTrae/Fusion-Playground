@@ -26,6 +26,7 @@ public class CardManagerBuilder : MonoBehaviour
     private int cardWidth = 272;
     private int cardHeight = 384;
     private int cardVerticalSpacing = 45;
+    public int Xequals = 3;
 
     private Dictionary<string, Texture2D> imageCache = new Dictionary<string, Texture2D>();
     private Dictionary<string, ScryfallCard> cardCache = new Dictionary<string, ScryfallCard>();
@@ -282,6 +283,8 @@ public class CardManagerBuilder : MonoBehaviour
         {
             // Apply card information directly from the ScryfallCard object
             cardInfo = card;
+            ExtractManaValue();
+            ExtractColors();
             StartCoroutine(DownloadAndUseImage(card.image_uris.large, card));
             //Debug.Log("Downloading image at: " + card.image_uris.large);
         }
@@ -310,5 +313,57 @@ public class CardManagerBuilder : MonoBehaviour
             Debug.LogError("Texture is null. Cannot create sprite.");
             return null;
         }
+    }
+
+    private void ExtractManaValue()
+    {
+        // Extract mana value from the mana cost string
+        //Debug.Log("Mana Cost: " + cardInfo.mana_cost);
+        string manaCost = cardInfo.mana_cost;
+        int manaValue = 0;
+
+        // Remove curly braces and split the mana cost into individual symbols
+        string[] symbols = manaCost.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string symbol in symbols)
+        {
+            // Check if the symbol is a number
+            if (int.TryParse(symbol, out int number))
+            {
+                manaValue += number;
+            }
+            else if (symbol == "X")
+            {
+                manaValue += Xequals; // Assume X is 3
+            }
+            else
+            {
+                // Mana symbols like {W}, {U/2}, {B/P}, {R/G}, etc.
+                manaValue += 1;
+            }
+            //Debug.Log("I found: " + symbol);
+        }
+
+        cardInfo.mana_value = manaValue;
+        //Debug.Log("Mana Value: " + manaValue);
+    }
+
+    private void ExtractColors()
+    {
+        //foreach (string color in cardInfo.colors)
+        //{
+        //   Debug.Log("Color: " + color);
+        //}
+        double sortingValue = 0.0;
+        sortingValue = cardInfo.colors.Count;
+        sortingValue += (double)(cardInfo.color_identity.Count / 10);
+        if (cardInfo.colors.Contains("W")) sortingValue += 0.01;
+        if (cardInfo.colors.Contains("U")) sortingValue += 0.002;
+        if (cardInfo.colors.Contains("B")) sortingValue += 0.0003;
+        if (cardInfo.colors.Contains("R")) sortingValue += 0.00004;
+        if (cardInfo.colors.Contains("G")) sortingValue += 0.000005;
+
+        cardInfo.color_sorting = sortingValue;
+        //Debug.Log("Sorting Value: " + sortingValue);
     }
 }

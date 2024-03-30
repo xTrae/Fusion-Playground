@@ -27,9 +27,9 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private TMP_InputField inputBox;
     private Lobby currentLobby;
-    private float lobbyBumpTimer = 25.0f;
+    private float lobbyBumpTimer;
     private float lobbyMaxBumpTime = 25.0f;
-    private float lobbyUpdateTimer = 2.0f;
+    private float lastUpdateTimer;
     private float lobbyMaxUpdateTime = 2.0f;
     private string playerName = "Player_";
     string playerId;
@@ -42,6 +42,9 @@ public class LobbyManager : MonoBehaviour
         listLobbiesButton.onClick.AddListener(ListLobbies);
         joinLobbiesButton.onClick.AddListener(JoinLobbyWithCode);
         returnButton.onClick.AddListener(ReturnButtonPress);
+
+        lastUpdateTimer = Time.time;
+        lobbyBumpTimer = Time.time;
     }
 
     private async void Start()
@@ -62,10 +65,13 @@ public class LobbyManager : MonoBehaviour
     {
         BumpLobbyTimer();
         // It would be nice to regularly check if the number of players changed, and update each player in the lobby who's all there.
+        PullForLobbyUpdates();
     }
 
     private async void BumpLobbyTimer()
     {
+        // It appears the non-host players are attempting to bump the lobby, and getting a 403 error.
+        // Also, players within the lobby arent able to see new player added with ListPlayers()
         if (currentLobby != null)
         {
             lobbyBumpTimer -= Time.deltaTime;
@@ -74,20 +80,20 @@ public class LobbyManager : MonoBehaviour
                 lobbyBumpTimer = lobbyMaxBumpTime;
                 await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
                 Debug.Log("Lobby Bump!");
+                ListPlayers(currentLobby);
             }
         }
     }
 
-    private async void HandLobbyPullForUpdates()
+    private async void PullForLobbyUpdates()
     {
         if (currentLobby != null)
         {
-            lobbyUpdateTimer -= Time.deltaTime;
-            if (lobbyUpdateTimer < 0)
+            if ((Time.time - lastUpdateTimer) > lobbyMaxUpdateTime)
             {
-                lobbyUpdateTimer = lobbyMaxUpdateTime;
-                await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
-                Debug.Log("Lobby Bump!");
+                lastUpdateTimer = Time.time;
+                //await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
+                Debug.Log("Checking for Updates? This doesn't do anything right now.");
             }
         }
     }
@@ -101,7 +107,7 @@ public class LobbyManager : MonoBehaviour
             CreateLobbyOptions newLobbyOptions = new CreateLobbyOptions
             {
                 IsPrivate = false, //Setting this to true would make it enter-by-code only. It won't show up in searches.
-                Player = GetPlayer(),
+                Player = GetNewPlayer(),
                 Data = new Dictionary<string, DataObject>
                 {
                     { "GameMode", new DataObject(DataObject.VisibilityOptions.Public, "Deez Nuts", DataObject.IndexOptions.S1) }
@@ -129,7 +135,7 @@ public class LobbyManager : MonoBehaviour
                 Filters = new List<QueryFilter>
                 {
                     new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT), // GT means "Greater Than". There are many expression opions.
-                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "Deez Nuts", QueryFilter.OpOptions.EQ)
+                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "Deez Nuts", QueryFilter.OpOptions.EQ) // EQ means "Equal to"
                 },
                 Order = new List<QueryOrder>
                 {
@@ -168,7 +174,7 @@ public class LobbyManager : MonoBehaviour
             {
                 JoinLobbyByCodeOptions joinLobbyOptions = new JoinLobbyByCodeOptions 
                 { 
-                    Player = GetPlayer()
+                    Player = GetNewPlayer()
                 };
                 Debug.Log("Searching for lobby: " + lobbyCode);
                 // The following both joins the lobby, and returns that lobby object, setting it to a variable.
@@ -192,7 +198,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    private Player GetPlayer()
+    private Player GetNewPlayer()
     {
         return new Player
         {
