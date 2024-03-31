@@ -213,6 +213,9 @@ public class CardManagerBuilder : MonoBehaviour
                     // Cache the fetched card data
                     cardCache[newCardName] = face;
 
+                    // Notate the card is double sided. Useful for later.
+                    face.doubleFaced = true;
+
                     // Apply card information
                     ApplyCardInfo(face);
                 }
@@ -318,8 +321,9 @@ public class CardManagerBuilder : MonoBehaviour
 
     private void ExtractCardType()
     {
-        // Double sided cards have their card types written like "Battle - Siege // Creature - Dog"
-        Debug.Log("Type: " + cardInfo.type_line);
+        // Double sided cards have their card types written like "Creature - Dog // Land - Mountain"
+        // However, cards which transform should not be counted. We need only worry about modal double sided cards.
+        Debug.Log("Card Type: " + cardInfo.type_line);
         string typeLine = cardInfo.type_line;
         string[] parts = typeLine.Split(new[] { " // " }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -336,11 +340,22 @@ public class CardManagerBuilder : MonoBehaviour
 
         string modifiedLine = string.Join(" ", parts);
         cardInfo.type_line = modifiedLine;
-        Debug.Log("Mod Type: " + modifiedLine);
+        Debug.Log("New Typeline: " + modifiedLine);
 
         // Create a sorting value based on card type.
         double sortingValue = 0.0;
+        // Primary Card Type
+        if (cardInfo.type_line.Contains("Land"))         sortingValue += 1;
+        else if (cardInfo.type_line.Contains("Creature"))     sortingValue += 2;
+        else if (cardInfo.type_line.Contains("Artifact"))     sortingValue += 3;
+        else if (cardInfo.type_line.Contains("Enchantment"))  sortingValue += 4;
+        else if (cardInfo.type_line.Contains("Sorcery"))      sortingValue += 5;
+        else if (cardInfo.type_line.Contains("Instant"))      sortingValue += 6;
+        else if (cardInfo.type_line.Contains("Planeswalker")) sortingValue += 7;
+        else if (cardInfo.type_line.Contains("Battle"))       sortingValue += 8;
+        // Secondary Card Types
         if (cardInfo.type_line.Contains("Land"))         sortingValue += 0.1;
+        if (cardInfo.type_line.Contains("Basic")) sortingValue += 0.1;
         if (cardInfo.type_line.Contains("Creature"))     sortingValue += 0.02;
         if (cardInfo.type_line.Contains("Artifact"))     sortingValue += 0.003;
         if (cardInfo.type_line.Contains("Enchantment"))  sortingValue += 0.0004;
@@ -350,6 +365,7 @@ public class CardManagerBuilder : MonoBehaviour
         if (cardInfo.type_line.Contains("Battle"))       sortingValue += 0.00000008;
         // Highest values first, decending.
         cardInfo.type_sorting = sortingValue;
+        Debug.Log("Type Sorting Value: " + sortingValue);
     }
 
     private void ExtractManaValue()
@@ -394,16 +410,16 @@ public class CardManagerBuilder : MonoBehaviour
         //}
         double sortingValue = 0.0;
         sortingValue = cardInfo.colors.Count;
-        sortingValue += (double)(cardInfo.color_identity.Count / 10);
+        sortingValue += (cardInfo.color_identity.Count / 10);
         if (cardInfo.color_identity.Contains("W")) sortingValue += 0.01;
         if (cardInfo.color_identity.Contains("U")) sortingValue += 0.002;
         if (cardInfo.color_identity.Contains("B")) sortingValue += 0.0003;
         if (cardInfo.color_identity.Contains("R")) sortingValue += 0.00004;
         if (cardInfo.color_identity.Contains("G")) sortingValue += 0.000005;
-        // I want to make sure even with mana value, they're sorted lower than 0 mana value cards.
+        // I want to make sure even when sorting mana value, lands are sorted lower than 0 mana value cards.
         if (cardInfo.type_line.Contains("Land")) sortingValue -= 1;
         // Lowest values first, acending.
         cardInfo.color_sorting = sortingValue;
-        Debug.Log("Sorting Value: " + sortingValue);
+        Debug.Log("Color Sorting Value: " + sortingValue);
     }
 }

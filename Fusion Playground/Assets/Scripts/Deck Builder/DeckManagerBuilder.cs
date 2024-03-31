@@ -38,6 +38,7 @@ public class ScryfallCard
     public string pairing;
     public List<string> category;
     public List<ScryfallCard> card_faces; // Add this field for double-faced cards
+    public bool doubleFaced = false;
     // Add more fields as needed
 }
 
