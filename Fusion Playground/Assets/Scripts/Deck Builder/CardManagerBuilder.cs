@@ -283,6 +283,7 @@ public class CardManagerBuilder : MonoBehaviour
         {
             // Apply card information directly from the ScryfallCard object
             cardInfo = card;
+            ExtractCardType();
             ExtractManaValue();
             ExtractColors();
             StartCoroutine(DownloadAndUseImage(card.image_uris.large, card));
@@ -315,10 +316,47 @@ public class CardManagerBuilder : MonoBehaviour
         }
     }
 
+    private void ExtractCardType()
+    {
+        // Double sided cards have their card types written like "Battle - Siege // Creature - Dog"
+        Debug.Log("Type: " + cardInfo.type_line);
+        string typeLine = cardInfo.type_line;
+        string[] parts = typeLine.Split(new[] { " // " }, StringSplitOptions.RemoveEmptyEntries);
+
+        for (int i = 0; i < parts.Length; i++)
+        {
+            int indexOfDash = parts[i].IndexOf('-'); // Find the index of the dash character
+
+            if (indexOfDash != -1) // Check if the dash character exists in the string
+            {
+                string modifiedPart = parts[i].Substring(0, indexOfDash).Trim(); // Extract the substring before the dash and trim any extra spaces
+                parts[i] = modifiedPart;
+            }
+        }
+
+        string modifiedLine = string.Join(" ", parts);
+        cardInfo.type_line = modifiedLine;
+        Debug.Log("Mod Type: " + modifiedLine);
+
+        // Create a sorting value based on card type.
+        double sortingValue = 0.0;
+        if (cardInfo.type_line.Contains("Land"))         sortingValue += 0.1;
+        if (cardInfo.type_line.Contains("Creature"))     sortingValue += 0.02;
+        if (cardInfo.type_line.Contains("Artifact"))     sortingValue += 0.003;
+        if (cardInfo.type_line.Contains("Enchantment"))  sortingValue += 0.0004;
+        if (cardInfo.type_line.Contains("Sorcery"))      sortingValue += 0.00005;
+        if (cardInfo.type_line.Contains("Instant"))      sortingValue += 0.000006;
+        if (cardInfo.type_line.Contains("Planeswalker")) sortingValue += 0.0000007;
+        if (cardInfo.type_line.Contains("Battle"))       sortingValue += 0.00000008;
+        // Highest values first, decending.
+        cardInfo.type_sorting = sortingValue;
+    }
+
     private void ExtractManaValue()
     {
         // Extract mana value from the mana cost string
-        //Debug.Log("Mana Cost: " + cardInfo.mana_cost);
+        Debug.Log("Name: " + cardInfo.name);
+        Debug.Log("Mana Cost: " + cardInfo.mana_cost);
         string manaCost = cardInfo.mana_cost;
         int manaValue = 0;
 
@@ -357,13 +395,15 @@ public class CardManagerBuilder : MonoBehaviour
         double sortingValue = 0.0;
         sortingValue = cardInfo.colors.Count;
         sortingValue += (double)(cardInfo.color_identity.Count / 10);
-        if (cardInfo.colors.Contains("W")) sortingValue += 0.01;
-        if (cardInfo.colors.Contains("U")) sortingValue += 0.002;
-        if (cardInfo.colors.Contains("B")) sortingValue += 0.0003;
-        if (cardInfo.colors.Contains("R")) sortingValue += 0.00004;
-        if (cardInfo.colors.Contains("G")) sortingValue += 0.000005;
-
+        if (cardInfo.color_identity.Contains("W")) sortingValue += 0.01;
+        if (cardInfo.color_identity.Contains("U")) sortingValue += 0.002;
+        if (cardInfo.color_identity.Contains("B")) sortingValue += 0.0003;
+        if (cardInfo.color_identity.Contains("R")) sortingValue += 0.00004;
+        if (cardInfo.color_identity.Contains("G")) sortingValue += 0.000005;
+        // I want to make sure even with mana value, they're sorted lower than 0 mana value cards.
+        if (cardInfo.type_line.Contains("Land")) sortingValue -= 1;
+        // Lowest values first, acending.
         cardInfo.color_sorting = sortingValue;
-        //Debug.Log("Sorting Value: " + sortingValue);
+        Debug.Log("Sorting Value: " + sortingValue);
     }
 }

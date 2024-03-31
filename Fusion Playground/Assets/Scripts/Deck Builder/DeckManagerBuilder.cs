@@ -31,6 +31,7 @@ public class ScryfallCard
     public List<string> color_identity;
     public double color_sorting;
     public string type_line;
+    public double type_sorting;
     public int mana_value;
     public ImageUris image_uris;
     public List<int> multiverse_ids;
